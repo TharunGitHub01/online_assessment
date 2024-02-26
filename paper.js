@@ -1,3 +1,6 @@
+let index = 0;
+let score = 0;
+let timer;
 
 const questions = [
     {
@@ -55,15 +58,40 @@ const nextButton = document.getElementById("next-btn");
 const numBox = document.getElementById("num_box");
 const changeElementRoot = document.getElementById("display_non");
 
-let index = 0;
-let score = 0;
+//let index = 0;
+//let score = 0;
+
+
+
+
+function startTimer() {
+    timer = setInterval(function () {
+        document.getElementById("timer").innerText = Time left: ${timeInSeconds} seconds;
+        timeInSeconds--;
+
+        if (timeInSeconds < 0) {
+            clearInterval(timer);
+            showScore();
+        }
+    }, 1000);
+}
+
+
+function stopTimer() {
+    clearInterval(timer);
+}
+
 
 function startQuiz() {
     index = 0;
     score = 0;
+    timeInSeconds = 120; // Set the total time in seconds
+    startTimer();
     nextButton.innerHTML = "Next";
     showQuestion();
 }
+
+
 
 function showQuestion() {
     resetState();
@@ -152,11 +180,16 @@ prevButton.addEventListener("click", () => {
 
 
 function showScore() {
+    stopTimer();
     resetState();
-    questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
-    nextButton.innerHTML = "play Again";
-    nextButton.style.display = "block";
+    const resultElement = document.getElementById("result");
+    resultElement.innerHTML = You scored ${score} out of ${questions.length}!;
+    document.getElementById("questionState").style.display = "none";
+    document.getElementById("display_non").style.display = "block";
+    resultElement.style.display = "block";
 }
+
+
 
 function btn() {
     var i = 1;
@@ -191,6 +224,5 @@ function openNav() {
 
 function closeNav() {
     document.getElementById("questionState").style.display = "none";
-    document.getElementById("display_non").style.display = "block";
+    document.getElementById("display_non").style.display = "block";
 }
-
